@@ -1,27 +1,27 @@
-@extends('layouts.app', ['title' => 'Kategori'])
+@extends('layouts.app', ['title' => 'Metode Pembayaran'])
 
 @section('content')
 <!-- Begin Page Content -->
-<div class="container-fluid mb-5">
+<div class="container-fluid">
 
     <!-- Page Heading -->
     <div class="row">
         <div class="col-md-12">
             <div class="card border-0 shadow">
                 <div class="card-header">
-                    <h6 class="m-0 font-weight-bold"><i class="fas fa-folder"></i> KATEGORI</h6>
+                    <h6 class="m-0 font-weight-bold"><i class="fas fa-user-circle"></i> Metode Pembayaran</h6>
                 </div>
 
                 <div class="card-body">
-                    <form action="{{ route('admin.category.index') }}" method="GET">
+                    <form action="{{ route('admin.metodepembayaran.index') }}" method="GET">
                         <div class="form-group">
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
-                                    <a href="{{ route('admin.category.create') }}" class="btn btn-primary btn-sm"
+                                    <a href="{{ route('admin.metodepembayaran.create') }}" class="btn btn-primary btn-sm"
                                         style="padding-top: 10px;"><i class="fa fa-plus-circle"></i> TAMBAH</a>
                                 </div>
                                 <input type="text" class="form-control" name="q"
-                                    placeholder="cari berdasarkan nama kategori">
+                                    placeholder="cari berdasarkan nama">
                                 <div class="input-group-append">
                                     <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> CARI
                                     </button>
@@ -34,33 +34,35 @@
                             <thead>
                                 <tr>
                                     <th scope="col" style="text-align: center;width: 6%">NO.</th>
-                                    <th scope="col">GAMBAR</th>
-                                    <th scope="col">NAMA KATEGORI</th>
-                                    <th scope="col" style="width: 15%;text-align: center">AKSI</th>
+                                    <th scope="col">Metode</th>
+                                    <th scope="col">No Rekening</th>
+                                    <th scope="col">Nama Rekening</th>
+                                    <th scope="col">Type</th>
+                                    <th scope="col" style="width: 15%;text-align: center">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse($categories as $no => $category)
+                                @forelse ($metodepembayarans as $no => $m)
                                 <tr>
                                     <th scope="row" style="text-align: center">
-                                        {{ ++$no + ($categories->currentPage()-1) * $categories->perPage() }}</th>
+                                        {{ ++$no + ($metodepembayarans->currentPage()-1) * $metodepembayarans->perPage() }}</th>
+                                    <td>{{ $m->nama_metode }}</td>
+                                    <td>{{ $m->no_rekening }}</td>
+                                    <td>{{ $m->nama_pemilik_rekening }}</td>
+                                    <td>{{ $m->type }}</td>
                                     <td class="text-center">
-                                        <img src="{{ $category->image }}"
-                                            style="width:50px">
-                                    </td>
-                                    <td>{{ $category->name }}</td>
-                                    <td class="text-center">
-                                        <a href="{{ route('admin.category.edit', $category->id) }}"
+                                        <a href="{{ route('admin.metodepembayaran.edit', $m->id) }}"
                                             class="btn btn-sm btn-primary">
                                             <i class="fa fa-pencil-alt"></i>
                                         </a>
 
                                         <button onClick="Delete(this.id)" class="btn btn-sm btn-danger"
-                                            id="{{ $category->id }}">
+                                            id="{{ $m->id }}">
                                             <i class="fa fa-trash"></i>
                                         </button>
                                     </td>
                                 </tr>
+
                                 @empty
 
                                     <div class="alert alert-danger">
@@ -71,7 +73,7 @@
                             </tbody>
                         </table>
                         <div style="text-align: center">
-                            {{ $categories->links("vendor.pagination.bootstrap-4") }}
+                            {{ $metodepembayarans->links("vendor.pagination.bootstrap-4") }}
                         </div>
                     </div>
                 </div>
@@ -102,7 +104,7 @@
 
                 //ajax delete
                 jQuery.ajax({
-                    url: "/admin/category/" + id,
+                    url: "/admin/metodepembayaran/" + id,
                     data: {
                         "id": id,
                         "_token": token

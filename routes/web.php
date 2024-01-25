@@ -18,10 +18,10 @@ Route::prefix('admin')->group(function () {
 
     //group route with middleware "auth"
     Route::group(['middleware' => 'auth'], function() {
-        
+
         //route dashboard
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard.index');
-    
+
         //route category
         Route::resource('/category', CategoryController::class, ['as' => 'admin']);
 
@@ -42,5 +42,8 @@ Route::prefix('admin')->group(function () {
 
         //route user
         Route::resource('/user', UserController::class, ['except' => ['show'], 'as' => 'admin']);
+
+         //route category
+         Route::resource('/metodepembayaran', MetodePembayaranController::class, ['as' => 'admin']);
     });
 });

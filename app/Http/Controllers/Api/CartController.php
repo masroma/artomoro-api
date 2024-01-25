@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class CartController extends Controller
-{       
+{
     /**
      * __construct
      *
@@ -16,7 +16,7 @@ class CartController extends Controller
     public function __construct()
     {
         $this->middleware('auth:api');
-    } 
+    }
 
     /**
      * index
@@ -29,14 +29,14 @@ class CartController extends Controller
                 ->where('customer_id', auth()->user()->id)
                 ->orderBy('created_at', 'desc')
                 ->get();
-        
+
         return response()->json([
             'success' => true,
             'message' => 'List Data Cart',
             'cart'    => $carts
         ]);
     }
-    
+
     /**
      * store
      *
@@ -76,7 +76,25 @@ class CartController extends Controller
             'product'   => $item->product
         ]);
     }
-    
+
+    public function update(Request $request, $id)
+    {
+
+        $item = Cart::findOrFail($id);
+        $item->quantity = $request->quantity;
+        $item->price = $request->price;
+        $item->weight = $request->weight;
+        $item->save();
+
+
+        return response()->json([
+            'success'   => true,
+            'message'   => 'Success Update To Cart',
+            'quantity'  => $item->quantity,
+            'product'   => $item->product
+        ]);
+    }
+
     /**
      * getCartTotal
      *
@@ -88,14 +106,14 @@ class CartController extends Controller
                 ->where('customer_id', auth()->user()->id)
                 ->orderBy('created_at', 'desc')
                 ->sum('price');
-        
+
         return response()->json([
             'success' => true,
             'message' => 'Total Cart Price ',
             'total'   => $carts
         ]);
     }
-    
+
     /**
      * getCartTotalWeight
      *
@@ -107,14 +125,14 @@ class CartController extends Controller
                 ->where('customer_id', auth()->user()->id)
                 ->orderBy('created_at', 'desc')
                 ->sum('weight');
-        
+
         return response()->json([
             'success' => true,
             'message' => 'Total Cart Weight ',
             'total'   => $carts
         ]);
     }
-    
+
     /**
      * removeCart
      *
@@ -126,7 +144,7 @@ class CartController extends Controller
         Cart::with('product')
                 ->whereId($request->cart_id)
                 ->delete();
-        
+
         return response()->json([
             'success' => true,
             'message' => 'Remove Item Cart',
@@ -144,7 +162,7 @@ class CartController extends Controller
         Cart::with('product')
                 ->where('customer_id', auth()->guard('api')->user()->id)
                 ->delete();
-        
+
         return response()->json([
             'success' => true,
             'message' => 'Remove All Item in Cart',

@@ -46,10 +46,10 @@
   </style>
 
   <!-- jQuery -->
-  <script src="{{ asset('assets/vendor/jquery/jquery.min.js') }}"></script>  
+  <script src="{{ asset('assets/vendor/jquery/jquery.min.js') }}"></script>
 
   <!-- sweet alert -->
-  <script src="{{ asset('assets/js/sweetalert.min.js') }}"></script>  
+  <script src="{{ asset('assets/js/sweetalert.min.js') }}"></script>
 
 </head>
 
@@ -134,6 +134,13 @@
         <a class="nav-link" href="{{ route('admin.user.index') }}">
           <i class="fas fa-users"></i>
           <span>USERS</span></a>
+      </li>
+
+      <li class="nav-item {{ Request::is('admin/metodepembayaran*') ? ' active' :  '' }}">
+        <a class="nav-link" href="{{ route('admin.metodepembayaran.index') }}">
+            <i class="fa fa-id-card" aria-hidden="true"></i>
+
+          <span>Metode Pembayaran</span></a>
       </li>
 
       <!-- Divider -->

@@ -34,8 +34,10 @@ Route::get('/product/{slug?}', [ProductController::class, 'show'])->name('custom
 /**
  * Route API Cart
  */
+Route::get('/metodepembeyaran', [CartController::class, 'index'])->name('customer.metodepembayaran.index');
 Route::get('/cart', [CartController::class, 'index'])->name('customer.cart.index');
 Route::post('/cart', [CartController::class, 'store'])->name('customer.cart.store');
+Route::post('/cart/update/{id}', [CartController::class, 'update'])->name('customer.cart.update');
 Route::get('/cart/total', [CartController::class, 'getCartTotal'])->name('customer.cart.total');
 Route::get('/cart/totalWeight', [CartController::class, 'getCartTotalWeight'])->name('customer.cart.getCartTotalWeight');
 Route::post('/cart/remove', [CartController::class, 'removeCart'])->name('customer.cart.remove');
