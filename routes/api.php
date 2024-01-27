@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\Route;
 Route::post('/login', [AuthController::class, 'login'])->name('api.customer.login');
 Route::post('/register', [AuthController::class, 'register'])->name('api.customer.register');
 Route::get('/user', [AuthController::class, 'getUser'])->name('api.customer.user');
+Route::post('/updateprofile', [AuthController::class, 'updateProfile'])->name('api.customer.updateprofile');
+
+Route::post('/updatepassword', [AuthController::class, 'updatePassword'])->name('api.customer.updatepassword');
 
 /**
  * Router Order
@@ -34,7 +37,7 @@ Route::get('/product/{slug?}', [ProductController::class, 'show'])->name('custom
 /**
  * Route API Cart
  */
-Route::get('/metodepembeyaran', [CartController::class, 'index'])->name('customer.metodepembayaran.index');
+Route::get('/metodepembayaran', [MetodePembayaranController::class, 'index'])->name('customer.metodepembayaran.index');
 Route::get('/cart', [CartController::class, 'index'])->name('customer.cart.index');
 Route::post('/cart', [CartController::class, 'store'])->name('customer.cart.store');
 Route::post('/cart/update/{id}', [CartController::class, 'update'])->name('customer.cart.update');

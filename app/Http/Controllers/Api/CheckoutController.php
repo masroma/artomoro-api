@@ -12,7 +12,7 @@ use App\Http\Controllers\Controller;
 
 class CheckoutController extends Controller
 {
-    protected $request;     
+    protected $request;
 
     /**
      * __construct
@@ -29,7 +29,7 @@ class CheckoutController extends Controller
         \Midtrans\Config::$isProduction = config('services.midtrans.isProduction');
         \Midtrans\Config::$isSanitized  = config('services.midtrans.isSanitized');
         \Midtrans\Config::$is3ds        = config('services.midtrans.is3ds');
-    } 
+    }
 
     public function store()
     {
@@ -60,6 +60,7 @@ class CheckoutController extends Controller
                 'address'       => $this->request->address,
                 'grand_total'   => $this->request->grand_total,
                 'status'        => 'pending',
+                'paymentlocal_id' => $this->request->pembayaranlocal_id
             ]);
 
             foreach (Cart::where('customer_id', auth()->guard('api')->user()->id)->get() as $cart) {
@@ -67,7 +68,7 @@ class CheckoutController extends Controller
                 //insert product ke table order
                 $invoice->orders()->create([
                     'invoice_id'    => $invoice->id,
-                    'invoice'       => $no_invoice,    
+                    'invoice'       => $no_invoice,
                     'product_id'    => $cart->product_id,
                     'product_name'  => $cart->product->title,
                     'image'         => $cart->product->image,
@@ -87,28 +88,28 @@ class CheckoutController extends Controller
                     'first_name'       => $invoice->name,
                     'email'            => auth()->guard('api')->user()->email,
                     'phone'            => $invoice->phone,
-                    'shipping_address' => $invoice->address  
+                    'shipping_address' => $invoice->address
                 ]
             ];
 
             //create snap token
-            $snapToken = Snap::getSnapToken($payload);
-            $invoice->snap_token = $snapToken;
-            $invoice->save();
+            // $snapToken = Snap::getSnapToken($payload);
+            // $invoice->snap_token = $snapToken;
+            // $invoice->save();
 
-            $this->response['snap_token'] = $snapToken;
+            // $this->response['snap_token'] = $snapToken;
 
 
         });
 
         return response()->json([
             'success' => true,
-            'message' => 'Order Successfully',  
+            'message' => 'Order Successfully',
             $this->response
         ]);
 
     }
-    
+
     /**
      * notificationHandler
      *
@@ -119,7 +120,7 @@ class CheckoutController extends Controller
     {
         $payload      = $request->getContent();
         $notification = json_decode($payload);
-      
+
         $validSignatureKey = hash("sha512", $notification->order_id . $notification->status_code . $notification->gross_amount . config('services.midtrans.serverKey'));
 
         if ($notification->signature_key != $validSignatureKey) {
@@ -135,12 +136,12 @@ class CheckoutController extends Controller
         $data_transaction = Invoice::where('invoice', $orderId)->first();
 
         if ($transaction == 'capture') {
- 
+
             // For credit card transaction, we need to check whether transaction is challenge by FDS or not
             if ($type == 'credit_card') {
 
               if($fraud == 'challenge') {
-                
+
                 /**
                 *   update invoice to pending
                 */
@@ -149,7 +150,7 @@ class CheckoutController extends Controller
                 ]);
 
               } else {
-                
+
                 /**
                 *   update invoice to success
                 */
@@ -173,7 +174,7 @@ class CheckoutController extends Controller
 
         } elseif($transaction == 'pending'){
 
-            
+
             /**
             *   update invoice to pending
             */
@@ -184,7 +185,7 @@ class CheckoutController extends Controller
 
         } elseif ($transaction == 'deny') {
 
-            
+
             /**
             *   update invoice to failed
             */
@@ -195,7 +196,7 @@ class CheckoutController extends Controller
 
         } elseif ($transaction == 'expire') {
 
-            
+
             /**
             *   update invoice to expired
             */

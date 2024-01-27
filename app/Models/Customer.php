@@ -59,7 +59,7 @@ class Customer extends Authenticatable implements JWTSubject // <-- tambahkan in
     {
         return $this->getKey();
     }
-        
+
     /**
      * getJWTCustomClaims
      *
