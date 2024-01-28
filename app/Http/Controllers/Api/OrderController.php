@@ -20,7 +20,8 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $invoices = Invoice::with('orders')->where('customer_id', auth()->guard('api')->user()->id)->latest()->get();
+        $invoices = Invoice::with(['orders','payment'])
+        ->where('customer_id', auth()->guard('api')->user()->id)->latest()->get();
 
         return response()->json([
             'success' => true,

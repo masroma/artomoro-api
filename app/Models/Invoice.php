@@ -37,4 +37,14 @@ class Invoice extends Model
     {
         return $this->belongsTo(Customer::class);
     }
+
+    /**
+     * Get the payment that owns the Invoice
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function payment()
+    {
+        return $this->belongsTo(MetodePembayaran::class, 'paymentlocal_id', 'id');
+    }
 }
