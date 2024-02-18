@@ -15,7 +15,11 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::latest()->paginate(6);
+        $products = Product::when(request()->q, function($p) {
+            $p = $p->where('title', 'like', '%'. request()->q . '%');
+        })
+        ->where('stock','>',0)
+        ->latest()->paginate(8);
         return response()->json([
             'success'   => true,
             'message'   => 'List Data Products',

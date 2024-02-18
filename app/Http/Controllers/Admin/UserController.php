@@ -21,7 +21,7 @@ class UserController extends Controller
 
         return view('admin.user.index', compact('users'));
     }
-    
+
     /**
      * create
      *
@@ -31,7 +31,7 @@ class UserController extends Controller
     {
         return view('admin.user.create');
     }
-    
+
     /**
      * store
      *
@@ -43,8 +43,8 @@ class UserController extends Controller
        $this->validate($request, [
            'name'       => 'required',
            'email'      => 'required|email|unique:users',
-           'password'   => 'required|confirmed'      
-       ]); 
+           'password'   => 'required|confirmed'
+       ]);
 
        //save to DB
        $user = User::create([
@@ -61,7 +61,7 @@ class UserController extends Controller
             return redirect()->route('admin.user.index')->with(['error' => 'Data Gagal Disimpan!']);
         }
     }
-    
+
     /**
      * edit
      *
@@ -72,7 +72,7 @@ class UserController extends Controller
     {
         return view('admin.user.edit', compact('user'));
     }
-    
+
     /**
      * update
      *
@@ -85,8 +85,8 @@ class UserController extends Controller
         $this->validate($request, [
             'name'       => 'required',
             'email'      => 'required|email|unique:users,email,'.$user->id,
-            'password'   => 'required|confirmed'      
-        ]); 
+            'password'   => 'required|confirmed'
+        ]);
 
         //cek password
         if($request->password == "") {
@@ -108,7 +108,7 @@ class UserController extends Controller
                 'password'   => bcrypt($request->password),
             ]);
         }
- 
+
         if($user){
              //redirect dengan pesan sukses
              return redirect()->route('admin.user.index')->with(['success' => 'Data Berhasil Diupdate!']);
@@ -117,7 +117,7 @@ class UserController extends Controller
              return redirect()->route('admin.user.index')->with(['error' => 'Data Gagal Diupdate!']);
          }
     }
-    
+
     /**
      * destroy
      *

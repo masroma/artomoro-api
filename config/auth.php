@@ -40,10 +40,16 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
-        
+
         'api' => [
             'driver' => 'jwt',			// <-- set ke jwt
             'provider' => 'customers',	// <-- set providers ke customers
+            'hash' => false,
+        ],
+
+        'api_admin' => [			// <-- atur menjadi "api_admin"
+            'driver' => 'jwt',		// <-- atur menjadi "jwt"
+            'provider' => 'users',
             'hash' => false,
         ],
     ],

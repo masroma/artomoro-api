@@ -23,7 +23,7 @@ class CategoryController extends Controller
 
         return view('admin.category.index', compact('categories'));
     }
-    
+
     /**
      * create
      *
@@ -33,7 +33,7 @@ class CategoryController extends Controller
     {
         return view('admin.category.create');
     }
-    
+
     /**
      * store
      *
@@ -44,8 +44,8 @@ class CategoryController extends Controller
     {
        $this->validate($request, [
            'image' => 'required|image|mimes:jpeg,jpg,png|max:2000',
-           'name'  => 'required|unique:categories' 
-       ]); 
+           'name'  => 'required|unique:categories'
+       ]);
 
        //upload image
        $image = $request->file('image');
@@ -66,7 +66,7 @@ class CategoryController extends Controller
             return redirect()->route('admin.category.index')->with(['error' => 'Data Gagal Disimpan!']);
         }
     }
-    
+
     /**
      * edit
      *
@@ -78,7 +78,7 @@ class CategoryController extends Controller
     {
         return view('admin.category.edit', compact('category'));
     }
-    
+
     /**
      * update
      *
@@ -89,12 +89,12 @@ class CategoryController extends Controller
     public function update(Request $request, Category $category)
     {
         $this->validate($request, [
-            'name'  => 'required|unique:categories,name,'.$category->id 
-        ]); 
+            'name'  => 'required|unique:categories,name,'.$category->id
+        ]);
 
         //check jika image kosong
         if($request->file('image') == '') {
-            
+
             //update data tanpa image
             $category = Category::findOrFail($category->id);
             $category->update([
@@ -128,7 +128,7 @@ class CategoryController extends Controller
             return redirect()->route('admin.category.index')->with(['error' => 'Data Gagal Diupdate!']);
         }
     }
-    
+
     /**
      * destroy
      *

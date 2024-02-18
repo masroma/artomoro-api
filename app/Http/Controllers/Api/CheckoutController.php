@@ -104,8 +104,8 @@ class CheckoutController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Order Successfully',
-            $this->response
+            'message' => 'Order Successfully'
+            // $this->response
         ]);
 
     }

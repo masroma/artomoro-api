@@ -24,7 +24,7 @@ class DashboardController extends Controller
         //year and month
         $year   = date('Y');
         $month  = date('m');
-		
+
         //statistic revenue
         $revenueMonth = Invoice::where('status', 'success')->whereMonth('created_at', '=', $month)->whereYear('created_at', $year)->sum('grand_total');
         $revenueYear  = Invoice::where('status', 'success')->whereYear('created_at', $year)->sum('grand_total');

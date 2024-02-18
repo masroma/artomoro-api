@@ -63,3 +63,38 @@ Route::post('/notificationHandler', [CheckoutController::class, 'notificationHan
  * Route API Slider
  */
 Route::get('/sliders', [SliderController::class, 'index'])->name('customer.slider.index');
+
+
+Route::prefix('api-admin')->group(function () {
+
+    //route login
+    Route::post('/login', [AuthAdminController::class, 'index', ['as' => 'admin']]);
+
+    //group route with middleware "auth:api_admin"
+    Route::group(['middleware' => 'auth:api_admin'], function() {
+
+        //data user
+        Route::get('/user', [AuthAdminController::class, 'getUser', ['as' => 'admin']]);
+
+        //refresh token JWT
+        Route::get('/refresh', [AuthAdminController::class, 'refreshToken', ['as' => 'admin']]);
+
+        //logout
+        Route::post('/logout', [AuthAdminController::class, 'logout', ['as' => 'admin']]);
+
+
+        Route::get('/order', [OrderAdminController::class, 'index'])->name('admin.order.index');
+        Route::get('/omsetkemarin', [OrderAdminController::class, 'omsetKemarin'])->name('admin.omsetkemarin.index');
+        Route::get('/omsethariini', [OrderAdminController::class, 'omsetHariIni'])->name('admin.omsethariini.index');
+        Route::get('/omsetbulanini', [OrderAdminController::class, 'omsetSatuBulanIni'])->name('admin.omsetbulanini.index');
+        Route::get('/cart', [CartAdminController::class, 'index'])->name('admin.cart.index');
+        Route::post('/cart', [CartAdminController::class, 'store'])->name('admin.cart.store');
+        Route::post('/cart/update/{id}', [CartAdminController::class, 'update'])->name('admin.cart.update');
+        Route::get('/cart/total', [CartAdminController::class, 'getCartTotal'])->name('admin.cart.total');
+        Route::get('/cart/totalWeight', [CartAdminController::class, 'getCartTotalWeight'])->name('admin.cart.getCartTotalWeight');
+        Route::post('/cart/remove', [CartAdminController::class, 'removeCart'])->name('admin.cart.remove');
+        Route::post('/cart/removeAll', [CartAdminController::class, 'removeAllCart'])->name('admin.cart.removeAll');
+        Route::post('/checkout', [CheckoutAdminController::class, 'store'])->name('admin.checkout.store');
+    });
+
+});

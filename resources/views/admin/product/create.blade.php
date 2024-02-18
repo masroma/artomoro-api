@@ -113,6 +113,77 @@
                             </div>
                         </div>
 
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>HARGA MODAL</label>
+                                    <input type="number" name="harga_modal" class="form-control @error('harga_modal') is-invalid @enderror"
+                                        value="{{ old('harga_modal') }}" placeholder="Harga Modal Produk">
+
+                                    @error('harga_modal')
+                                    <div class="invalid-feedback" style="display: block">
+                                        {{ $message }}
+                                    </div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Harga Reseller</label>
+                                    <input type="number" name="harga_reseller" class="form-control @error('harga_reseller') is-invalid @enderror"
+                                        value="{{ old('harga_reseller') }}" placeholder="harga reseller">
+
+                                    @error('harga_reseller')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Tanggal Masuk</label>
+                                    <input type="date" name="tanggal_masuk" class="form-control @error('tanggal_masuk') is-invalid @enderror"
+                                        value="{{ old('tanggal_masuk') }}" placeholder="Tanggal Masuk">
+
+                                    @error('tanggal_masuk')
+                                    <div class="invalid-feedback" style="display: block">
+                                        {{ $message }}
+                                    </div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Taggal exp</label>
+                                    <input type="date" name="tanggal_exp" class="form-control @error('tanggal_exp') is-invalid @enderror"
+                                        value="{{ old('tanggal_exp') }}" placeholder="harga reseller">
+
+                                    @error('tanggal_exp')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Stok</label>
+                                    <input type="number" name="stock" class="form-control @error('stock') is-invalid @enderror"
+                                        value="{{ old('stock') }}" placeholder="stock">
+
+                                    @error('stock')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+
                         <button class="btn btn-primary mr-1 btn-submit" type="submit"><i class="fa fa-paper-plane"></i>
                             SIMPAN</button>
                         <button class="btn btn-warning btn-reset" type="reset"><i class="fa fa-redo"></i> RESET</button>

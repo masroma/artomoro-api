@@ -20,7 +20,7 @@ class ProductController extends Controller
     {
         $products = Product::latest()->when(request()->q, function($products) {
             $products = $products->where('title', 'like', '%'. request()->q . '%');
-        })->paginate(10);
+        })->where('stock','>',0)->paginate(10);
 
         return view('admin.product.index', compact('products'));
     }
@@ -51,6 +51,9 @@ class ProductController extends Controller
            'content'        => 'required',
            'weight'         => 'required',
            'price'          => 'required',
+           'stock'          => 'required',
+           'harga_modal'    => 'required',
+
         //    'discount'       => 'required',
        ]);
 
@@ -70,7 +73,12 @@ class ProductController extends Controller
            'price'          => $request->price,
            'discount'       => $request->discount,
            'keywords'       => $request->keywords,
-           'description'    => $request->description
+           'description'    => $request->description,
+           'stock'          => $request->stock,
+           'harga_modal'    => $request->harga_modal,
+           'tanggal_masuk'  => $request->tanggal_masuk,
+           'tanggal_exp'    => $request->tanggal_exp,
+           'harga_reseller' => $request->harga_reseller
        ]);
 
        if($product){
@@ -127,7 +135,12 @@ class ProductController extends Controller
                 'price'          => $request->price,
                 'discount'       => $request->discount,
                 'keywords'       => $request->keywords,
-                'description'    => $request->description
+                'description'    => $request->description,
+                'stock'          => $request->stock,
+                'harga_modal'    => $request->harga_modal,
+                'tanggal_masuk'  => $request->tanggal_masuk,
+                'tanggal_exp'    => $request->tanggal_exp,
+                'harga_reseller' => $request->harga_reseller
             ]);
 
        } else {
@@ -152,7 +165,12 @@ class ProductController extends Controller
                 'price'          => $request->price,
                 'discount'       => $request->discount,
                 'keywords'       => $request->keywords,
-                'description'    => $request->description
+                'description'    => $request->description,
+                'stock'          => $request->stock,
+                'harga_modal'    => $request->harga_modal,
+                'tanggal_masuk'  => $request->tanggal_masuk,
+                'tanggal_exp'    => $request->tanggal_exp,
+                'harga_reseller' => $request->harga_reseller
             ]);
        }
 
