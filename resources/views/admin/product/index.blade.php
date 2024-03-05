@@ -36,6 +36,10 @@
                                     <th scope="col" style="text-align: center;width: 6%">NO.</th>
                                     <th scope="col">NAMA PRODUK</th>
                                     <th scope="col">KATEGORI</th>
+                                    <th scope="col">Harga</th>
+                                    <th scope="col">Modal</th>
+                                    <th scope="col">Margin</th>
+                                    <th scope="col">Stok</th>
                                     <th scope="col" style="width: 15%;text-align: center">AKSI</th>
                                 </tr>
                             </thead>
@@ -46,6 +50,11 @@
                                         {{ ++$no + ($products->currentPage()-1) * $products->perPage() }}</th>
                                     <td>{{ $product->title }}</td>
                                     <td>{{ $product->category->name }}</td>
+
+                                    <td>{{ moneyFormat($product->price) }}</td>
+                                    <td>{{ moneyFormat($product->harga_modal) }}</td>
+                                    <td>{{ moneyFormat($product->price - $product->harga_modal) }}</td>
+                                    <td>{{ $product->stock }}</td>
                                     <td class="text-center">
                                         <a href="{{ route('admin.product.edit', $product->id) }}"
                                             class="btn btn-sm btn-primary">

@@ -18,11 +18,14 @@ class OrderAdminController extends Controller
      */
     public function index()
     {
+
         $invoices = Invoice::with(['orders','payment'])
-        ->when(request()->tanggal, function($a){
-            $a->whereDate('created_at', request()->tanggal);
+        ->when(request()->tanggal != null, function($query){
+            $query->whereDate('created_at', request()->tanggal);
         })
-        ->where('customer_id', auth()->guard('api_admin')->user()->id)->latest()->limit(10)->get();
+        ->where('customer_id', auth()->guard('api_admin')->user()->id)
+        ->paginate(10);
+
 
         return response()->json([
             'success' => true,

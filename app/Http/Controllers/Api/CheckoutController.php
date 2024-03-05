@@ -45,6 +45,17 @@ class CheckoutController extends Controller
             }
 
             $no_invoice = 'INV-'.Str::upper($random);
+            $grandtotal = 0;
+            $grandtotalmodal = 0;
+            foreach(Cart::where('customer_id', auth()->user()->id)->get() as $cart)
+            {
+                $grandtotal += $cart->price;
+
+                $product = Product::findOrFail($cart->product_id);
+                $grandtotalmodal  += $product->harga_modal;
+
+
+            }
 
             $invoice = Invoice::create([
                 'invoice'       => $no_invoice,
@@ -59,13 +70,20 @@ class CheckoutController extends Controller
                 'city'          => $this->request->city,
                 'address'       => $this->request->address,
                 'grand_total'   => $this->request->grand_total,
+                'grand_total_modal'   => $grandtotalmodal,
                 'status'        => 'pending',
                 'paymentlocal_id' => $this->request->pembayaranlocal_id
             ]);
 
             foreach (Cart::where('customer_id', auth()->guard('api')->user()->id)->get() as $cart) {
-
                 //insert product ke table order
+                $product = Product::findOrFail($cart->product_id);
+                $pricemodal =  $cart->quantity * $product->harga_modal;
+
+                $kurangstock = $product->stock - $cart->quantity;
+                $product->stock = $kurangstock;
+                $product->save();
+
                 $invoice->orders()->create([
                     'invoice_id'    => $invoice->id,
                     'invoice'       => $no_invoice,
@@ -74,6 +92,7 @@ class CheckoutController extends Controller
                     'image'         => $cart->product->image,
                     'qty'           => $cart->quantity,
                     'price'         => $cart->price,
+                    'price_modal'   => $pricemodal
                 ]);
 
             }

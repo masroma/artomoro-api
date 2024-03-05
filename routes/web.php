@@ -45,5 +45,7 @@ Route::prefix('admin')->group(function () {
 
          //route category
          Route::resource('/metodepembayaran', MetodePembayaranController::class, ['as' => 'admin']);
+
+         Route::resource('/hutang', HutangController::class, ['as' => 'admin']);
     });
 });

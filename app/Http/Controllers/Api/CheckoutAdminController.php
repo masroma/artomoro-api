@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Cart;
+use App\Models\Product;
 use App\Models\Invoice;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
@@ -41,10 +42,15 @@ class CheckoutAdminController extends Controller
 
             $no_invoice = 'INV-'.Str::upper($random);
             $grandtotal = 0;
+            $grandtotalmodal = 0;
             foreach(Cart::where('customer_id', auth()->user()->id)->get() as $cart)
             {
                 $grandtotal += $cart->price;
+
+                $product = Product::findOrFail($cart->product_id);
+                $grandtotalmodal  += ($product->harga_modal*$cart->quantity);
             }
+
 
             $invoice = Invoice::create([
                 'invoice'       => $no_invoice,
@@ -61,10 +67,17 @@ class CheckoutAdminController extends Controller
                 'grand_total'   => $grandtotal,
                 'status'        => 'success',
                 'status_pengiriman'  => 'success',
-                'paymentlocal_id' => 3
+                'paymentlocal_id' => 3,
+                'grand_total_modal' => $grandtotalmodal
             ]);
 
             foreach (Cart::where('customer_id', auth()->user()->id)->get() as $cart) {
+
+                $product = Product::findOrFail($cart->product_id);
+                $pricemodal =  $cart->quantity * $product->harga_modal;
+                $kurangstock = $product->stock - $cart->quantity;
+                $product->stock = $kurangstock;
+                $product->save();
 
                 //insert product ke table order
                 $invoice->orders()->create([
@@ -75,6 +88,7 @@ class CheckoutAdminController extends Controller
                     'image'         => $cart->product->image,
                     'qty'           => $cart->quantity,
                     'price'         => $cart->price,
+                    'price_modal'   => $pricemodal
                 ]);
 
             }
