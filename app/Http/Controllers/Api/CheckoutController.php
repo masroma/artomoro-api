@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use Midtrans\Snap;
 use App\Models\Cart;
+use App\Models\Product;
 use App\Models\Invoice;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -57,6 +58,7 @@ class CheckoutController extends Controller
 
             }
 
+            
             $invoice = Invoice::create([
                 'invoice'       => $no_invoice,
                 'customer_id'   => auth()->guard('api')->user()->id,
@@ -72,7 +74,7 @@ class CheckoutController extends Controller
                 'grand_total'   => $this->request->grand_total,
                 'grand_total_modal'   => $grandtotalmodal,
                 'status'        => 'pending',
-                'paymentlocal_id' => $this->request->pembayaranlocal_id
+                'paymentlocal_id' => 3
             ]);
 
             foreach (Cart::where('customer_id', auth()->guard('api')->user()->id)->get() as $cart) {

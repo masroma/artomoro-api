@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('/login', [AuthController::class, 'login'])->name('api.customer.login');
 Route::post('/register', [AuthController::class, 'register'])->name('api.customer.register');
 Route::get('/user', [AuthController::class, 'getUser'])->name('api.customer.user');
+Route::get('/refreshtoken', [AuthController::class, 'refreshToken'])->name('api.customer.refreshtoken');
 Route::post('/updateprofile', [AuthController::class, 'updateProfile'])->name('api.customer.updateprofile');
 
 Route::post('/updatepassword', [AuthController::class, 'updatePassword'])->name('api.customer.updatepassword');

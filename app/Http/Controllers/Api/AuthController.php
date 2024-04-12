@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
+
 class AuthController extends Controller
 {
      /**
@@ -97,6 +98,25 @@ class AuthController extends Controller
      *
      * @return void
      */
+    public function refreshToken(Request $request)
+    {
+        //refresh "token"
+        $refreshToken = JWTAuth::refresh(JWTAuth::getToken());
+
+        //set user dengan "token" baru
+        $user = JWTAuth::setToken($refreshToken)->toUser();
+
+        //set header "Authorization" dengan type Bearer + "token" baru
+        $request->headers->set('Authorization','Bearer '.$refreshToken);
+
+        //response data "user" dengan "token" baru
+        return response()->json([
+            'success' => true,
+            'user'    => $user,
+            'token'   => $refreshToken,  
+        ], 200);
+    }
+
     public function getUser()
     {
         return response()->json([

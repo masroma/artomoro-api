@@ -19,7 +19,7 @@ class ProductController extends Controller
             $p = $p->where('title', 'like', '%'. request()->q . '%');
         })
         ->where('stock','>',0)
-        ->latest()->paginate(8);
+        ->latest()->paginate(9);
         return response()->json([
             'success'   => true,
             'message'   => 'List Data Products',
